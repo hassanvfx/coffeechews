@@ -251,6 +251,17 @@
       color: #2b1a10;
       font-weight: 800;
     }
+    /* Visually mark the default choice */
+    .cta-marks .default{
+      position: relative;
+      border-color: #b68a63;
+      box-shadow: 0 0 0 2px #b68a63 inset;
+    }
+    .cta-marks .default::after{
+      content: "★";
+      margin-left: 6px;
+      font-size: 12px;
+    }
 
     .btn{
       display:inline-grid; place-items:center;
@@ -299,7 +310,7 @@
 
         <!-- Cups hype (centered) -->
         <div class="cups-block">
-         <div class="subtitle" id="equivalencyLine">10 Chews = 10 Cups</div>
+          <div class="subtitle" id="equivalencyLine">10 Chews = 10 Cups</div>
           <div class="cups-grid" id="cupsGrid"></div>
           <div class="cups-summary">
             <span class="badge" id="cupsCount">10 cups total</span>
@@ -368,6 +379,12 @@
       return Number.isFinite(c) && c > 0 ? c : 3.50;
     })();
 
+    // NEW: desired default chews (URL override: ?default_chews=60)
+    const DEFAULT_CHEWS = (() => {
+      const d = parseInt(params.get("default_chews") || "30", 10);
+      return Number.isFinite(d) && d > 0 ? d : 30;
+    })();
+
     // DOM
     const productImage  = document.getElementById("productImage");
 
@@ -396,13 +413,22 @@
       return -1;
     }
 
-    function setMarks(){
+    function findIndexByChews(n){
+      return products.findIndex(p => p.chews === n);
+    }
+
+    function setMarks(defaultIdx){
       marks.innerHTML = "";
       products.forEach((p, i) => {
         const m = document.createElement("span");
         m.textContent = `${p.chews} Chews`;
         m.dataset.index = String(i);
         if (p.stock <= 0) m.classList.add("oos");
+        if (i === defaultIdx) {
+          m.classList.add("default");
+          m.setAttribute("aria-label", `${p.chews} chews (default)`);
+          m.title = "Default";
+        }
         marks.appendChild(m);
       });
     }
@@ -496,13 +522,21 @@
     (function init(){
       range.min = 0;
       range.max = products.length - 1;
-      range.value = 0;
 
-      setMarks();
+      // Compute desired default index (30 chews by default, or ?default_chews=XX)
+      const desiredIdx = (() => {
+        const i = findIndexByChews(DEFAULT_CHEWS);
+        return i >= 0 ? i : 0; // fallback to first item if not present
+      })();
 
-      // Initialize header with first in-stock option for correctness
-      const initialBest = firstInStockFrom(0);
-      const initIdx = initialBest >= 0 ? initialBest : 0;
+      // Render marks with a visual "default" badge
+      setMarks(desiredIdx);
+
+      // Start from desired index; if it's OOS, jump to nearest in-stock
+      const initialBest = firstInStockFrom(desiredIdx);
+      const initIdx = initialBest >= 0 ? initialBest : desiredIdx;
+
+      // Initialize UI + slider position
       updateUI(initIdx);
       range.value = String(initIdx);
 
