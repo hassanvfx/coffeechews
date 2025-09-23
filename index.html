@@ -142,28 +142,6 @@
       opacity: .95;
     }
 
-    .meta{
-      display:flex; flex-wrap:wrap; gap:8px;
-      align-items:center; justify-content:center;
-      padding: 0 var(--side-pad);
-      width: 100%;
-    }
-    .pill{
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: var(--accent);
-      color: #fff;
-      font-weight: 800; letter-spacing:.2px;
-      box-shadow: 0 2px 0 rgba(0,0,0,.12) inset;
-      white-space: nowrap;
-      font-size: 14px;
-    }
-    /* Bigger price pill per request */
-    #pricePill{
-      padding: 10px 22px;         /* larger horizontal padding */
-      font-size: 18px;            /* larger font */
-    }
-
     /* ---------- CUPS HYPE (RESPONSIVE GRID) ---------- */
     .cups-block{
       background: #fff8ee;
@@ -178,8 +156,11 @@
       --cols: 6; /* default mobile columns */
       grid-template-columns: repeat(var(--cols), minmax(16px, 1fr));
       gap: 6px;
-      justify-items:center; align-items:center;
+      justify-items:center;   /* center each cup in its cell */
+      justify-content:center; /* center the grid tracks */
+      place-content:center;   /* extra centering safety */
       width: 100%; max-width: 100%;
+      margin: 0 auto;         /* center the grid container */
     }
     @media (min-width: 420px) { .cups-grid { --cols: 8; } }
     @media (min-width: 520px) { .cups-grid { --cols: 10; } }
@@ -294,17 +275,14 @@
   <div class="wrap">
     <header class="hero">
       <div class="brand">
-       
         <div id="brandText">YouChews</div>
       </div>
-      <div class="title" id="pageTitle">CoffeeChews</div>
+      <!-- HERO: price + size -->
+      <div class="title" id="heroPriceSize">$14.99 • 10 Chews</div>
+      <!-- SUBTITLE: equivalency (chews = cups) -->
     </header>
 
-    <div class="meta">
-      <div class="pill" id="chewsPill">10 Chews</div>
-      <div class="pill" id="pricePill">$14.99</div>
-      <!-- stock pill removed per request -->
-    </div>
+    <!-- pills removed per request -->
 
     <section class="card">
       <!-- Visual + Meta -->
@@ -319,12 +297,13 @@
           <img id="productImage" class="fade" alt="Selected packaging"/>
         </div>
 
-        <!-- Cups hype stays at bottom of scrollable area -->
+        <!-- Cups hype (centered) -->
         <div class="cups-block">
+         <div class="subtitle" id="equivalencyLine">10 Chews = 10 Cups</div>
           <div class="cups-grid" id="cupsGrid"></div>
           <div class="cups-summary">
             <span class="badge" id="cupsCount">10 cups total</span>
-            <span class="badge" id="perCupCost">$1.50 per cup (chew)</span>
+            <span class="badge" id="perCupCost">$1.50 per chew</span>
             <span class="badge" id="compareCoffee">@ $3.50 coffee</span>
           </div>
         </div>
@@ -351,13 +330,12 @@
   <script>
     const params = new URLSearchParams(location.search);
 
-     const DEFAULTS = [
-        { chews: 5,  price:  9.99, img: "assets/chews5.png",  amazon: "https://www.amazon.com/", stock: 42 },
-        { chews: 10, price: 14.99, img: "assets/chews10.png", amazon: "https://www.amazon.com/", stock: 30 },
-        { chews: 30, price: 29.99, img: "assets/chews30.png", amazon: "https://www.amazon.com/", stock: 12 },
-        { chews: 60, price: 49.99, img: "assets/chews60.png", amazon: "https://www.amazon.com/", stock: 6  },
-        ];
-
+    const DEFAULTS = [
+      { chews: 5,  price:  9.99, img: "assets/chews5.jpg",  amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_0A01F090F37E839DA0308E98223BFE26_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 42 },
+      { chews: 10, price: 14.99, img: "assets/chews10.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_0A01F090F37E839DA0308E98223BFE26_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 30 },
+      { chews: 30, price: 29.99, img: "assets/chews30.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_0A01F090F37E839DA0308E98223BFE26_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 12 },
+      { chews: 60, price: 49.99, img: "assets/chews60.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_0A01F090F37E839DA0308E98223BFE26_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 6  },
+    ];
 
     const products = DEFAULTS.map((p, i) => {
       const idx = i + 1;
@@ -377,8 +355,10 @@
       return { chews, price, img, amazon, stock };
     }).sort((a,b) => a.chews - b.chews);
 
-    const brandTextEl = document.getElementById("brandText");
-    const pageTitleEl = document.getElementById("pageTitle");
+    const brandTextEl     = document.getElementById("brandText");
+    const heroPriceSizeEl = document.getElementById("heroPriceSize");
+    const equivalencyEl   = document.getElementById("equivalencyLine");
+
     const brandText = params.get("brand") || "CoffeeChews";
     brandTextEl.textContent = brandText;
     document.title = `${brandText} – CoffeeChews`;
@@ -390,8 +370,6 @@
 
     // DOM
     const productImage  = document.getElementById("productImage");
-    const chewsPill     = document.getElementById("chewsPill");
-    const pricePill     = document.getElementById("pricePill");
 
     const cupsGrid      = document.getElementById("cupsGrid");
     const cupsCount     = document.getElementById("cupsCount");
@@ -465,7 +443,7 @@
 
       saveBig.textContent = `You save ${currency(save)} (${pct.toFixed(0)}%)`;
       saveDetail.textContent = `vs ${p.chews} ${pluralize(p.chews, "coffee", "coffees")} @ ${currency(COFFEE_PRICE)}`;
-      perCupCost.textContent = `${currency(perUnit(p.price, p.chews))} per cup (chew)`;
+      perCupCost.textContent = `${currency(perUnit(p.price, p.chews))} per chew`;
       compareCoffee.textContent = `@ ${currency(COFFEE_PRICE)} coffee`;
     }
 
@@ -480,10 +458,10 @@
       img.src = src;
     }
 
-    function updateHeaderTitle(chews){
-      // Dynamic: “X Chews = X ☕ Cups”
-      const cupsWord = pluralize(chews, "Cup", "Cups");
-      pageTitleEl.textContent = `${chews} Chews = ${chews}☕ ${cupsWord}`;
+    function updateHero(p){
+      heroPriceSizeEl.textContent = `${currency(p.price)} • ${p.chews} ${pluralize(p.chews,"Chew","Chews")}`;
+      const cupsWord = pluralize(p.chews, "Cup", "Cups");
+      equivalencyEl.textContent = `${p.chews} Chews = ${p.chews} ${cupsWord}`;
     }
 
     function updateUI(idx){
@@ -491,11 +469,7 @@
       const target = bestIdx >= 0 ? products[bestIdx] : products[idx];
 
       swapImage(target.img, `${target.chews} CoffeeChews`);
-      chewsPill.textContent = `${target.chews} Chews`;
-      pricePill.textContent = currency(target.price);
-
-      // Dynamic header text
-      updateHeaderTitle(target.chews);
+      updateHero(target);
 
       renderCupsGrid(target.chews);
       cupsCount.textContent = `${target.chews} ${pluralize(target.chews, "cup", "cups")} total`;
@@ -509,8 +483,7 @@
         btnNext.dataset.href = "";
         highlightActiveMark(-1);
       } else {
-        const label = "Pick Your Saving Size";
-        ctaMsg.textContent = label;
+        ctaMsg.textContent = "Pick Your Saving Size";
         btnNext.classList.remove("btn-disabled");
         btnNext.disabled = false;
         btnNext.dataset.href = products[bestIdx].amazon || "";
