@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>YouChews – CoffeeChews</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ---------- MOBILE-FIRST + NO HORIZ SCROLL ---------- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; overflow-x: hidden; }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      background: #fffaf3;
+      color: #1c130d;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    :root{
+      --muted: #6f5c50;
+      --accent: #7b4b2a;
+      --accent-2: #e8d6c1;
+      --pill: #2b1a10;
+      --success: #1a8917;
+
+      --card: #ffffff;
+      --shadow: 0 6px 24px rgba(0,0,0,.08);
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+
+      --maxw: 980px;
+      --cta-h: 170px;         /* space for slider + button in CTA */
+      --side-pad: 16px;       /* mobile padding */
+    }
+
+    @media (prefers-reduced-motion: no-preference){
+      .smooth { transition: all .22s ease; }
+      .fade { transition: opacity .25s ease; }
+    }
+
+    .wrap{
+      width: 100%;
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 16px var(--side-pad);
+      padding-bottom: calc(var(--cta-h) + env(safe-area-inset-bottom) + 28px);
+      overflow-x: hidden;
+    }
+
+    header.hero{
+      display:grid; gap: 8px;
+      align-items:center; justify-items:center; text-align:center;
+      padding: 18px 0 6px;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:center; font-weight:900; letter-spacing:.5px;
+    }
+    .brand-logo{
+      width:36px; height:36px; border-radius:10px;
+      background: linear-gradient(135deg, #7b4b2a, #c08952);
+      box-shadow: var(--shadow);
+      flex: 0 0 auto;
+    }
+    .title{
+      font-size: clamp(22px, 6vw, 38px);
+      line-height: 1.05;
+      font-weight: 900;
+      padding: 0 var(--side-pad);
+    }
+    .subtitle{
+      font-size: 14px;
+      color: var(--muted);
+      padding: 0 var(--side-pad);
+    }
+
+    .card{
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      margin: 16px 0;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    /* ---------- VISUAL + IMAGE SAFEGUARDS ---------- */
+    .product-visual{
+      display:grid; justify-items:center; gap:10px;
+      width: 100%; max-width: 100%;
+    }
+    .img-wrap{
+      position: relative;     /* overlay anchor */
+      width: 100%; max-width: 100%;
+      aspect-ratio: 1/1;
+      background: #f3ece5;
+      border-radius: var(--radius-lg);
+      display:grid; place-items:center;
+      overflow: hidden;
+      border: 1px solid var(--accent-2);
+      padding: 10px;
+      will-change: transform;
+    }
+    .product-visual img{
+      width: 100%; max-width: 100%;
+      height: auto; display: block; object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.12));
+      opacity: 0.999; /* prevents blurry scaling on some mobiles */
+    }
+
+    /* ---------- SAVINGS OVERLAY (expands left) ---------- */
+    .save-overlay{
+      position: absolute;
+      top: 10px; right: var(--side-pad);
+      max-width: calc(100% - (var(--side-pad) * 2)); /* never overflow */
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end; /* anchor right, grow left */
+      gap: 4px;
+      pointer-events: none; /* no accidental taps */
+      z-index: 2;
+
+      background: linear-gradient(135deg, rgba(26,137,23,.92), rgba(26,137,23,.78));
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 12px;
+      box-shadow: 0 10px 26px rgba(0,0,0,.25);
+      backdrop-filter: blur(6px);
+      transform-origin: top right;
+    }
+    .save-overlay .big{
+      font-size: clamp(16px, 5.5vw, 28px);
+      font-weight: 900;
+      line-height: 1.05;
+      white-space: nowrap;
+    }
+    .save-overlay .sub{
+      font-size: 12px;
+      opacity: .95;
+    }
+
+    .meta{
+      display:flex; flex-wrap:wrap; gap:8px;
+      align-items:center; justify-content:center;
+      padding: 0 var(--side-pad);
+      width: 100%;
+    }
+    .pill{
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800; letter-spacing:.2px;
+      box-shadow: 0 2px 0 rgba(0,0,0,.12) inset;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+    /* Bigger price pill per request */
+    #pricePill{
+      padding: 10px 22px;         /* larger horizontal padding */
+      font-size: 18px;            /* larger font */
+    }
+
+    /* ---------- CUPS HYPE (RESPONSIVE GRID) ---------- */
+    .cups-block{
+      background: #fff8ee;
+      border:1px dashed #e9d6bd;
+      border-radius: 14px;
+      padding: 10px;
+      display:grid; gap:8px;
+      width: 100%;
+    }
+    .cups-grid{
+      display:grid;
+      --cols: 6; /* default mobile columns */
+      grid-template-columns: repeat(var(--cols), minmax(16px, 1fr));
+      gap: 6px;
+      justify-items:center; align-items:center;
+      width: 100%; max-width: 100%;
+    }
+    @media (min-width: 420px) { .cups-grid { --cols: 8; } }
+    @media (min-width: 520px) { .cups-grid { --cols: 10; } }
+    @media (min-width: 900px) { .cups-grid { --cols: 12; } }
+
+    .cup{ font-size: 3rem; line-height: 1; }
+    .cup.muted{ opacity:.4; }
+    .cups-summary{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center;
+      font-weight:800; color: var(--pill);
+    }
+    .badge{
+      background:#fff; border:1px solid #e7d8c5; padding:6px 10px; border-radius:999px;
+      font-size: 13px;
+    }
+
+    /* ---------- FIXED CTA BAR WITH SLIDER ---------- */
+    .cta-bar{
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      padding: 12px var(--side-pad) calc(12px + env(safe-area-inset-bottom));
+      background: #ffffffee; backdrop-filter: blur(6px);
+      border-top: 1px solid #e7d8c5;
+      display:flex; justify-content:center;
+      z-index: 10;
+      min-height: var(--cta-h);
+      max-width: 100vw;
+    }
+    .cta-inner{
+      width: 100%; max-width: var(--maxw);
+      display: grid; gap: 10px;
+      grid-template-columns: 1fr;
+      align-items: center;
+    }
+    .cta-title{
+      font-weight:900; color: #2b1a10; text-align:center;
+      font-size: 14px;
+      padding: 0 4px;
+      min-height: 20px;
+    }
+
+    /* Slider bigger touch area */
+    .cta-slider{
+      display:grid; gap:10px; width:100%;
+      padding: 6px 2px 0; /* extra vertical breathing room */
+    }
+    .cta-slider .track-pad{
+      padding: 10px 0; /* more vertical hit area for thumbs */
+      touch-action: pan-y;
+    }
+    .cta-slider input[type="range"]{
+      -webkit-appearance:none; appearance:none; width:100%;
+      background: transparent; max-width: 100%;
+    }
+    .cta-slider input[type="range"]::-webkit-slider-runnable-track{
+      height: 12px; background: #eadfce; border-radius: 999px;
+    }
+    .cta-slider input[type="range"]::-moz-range-track{
+      height: 12px; background: #eadfce; border-radius: 999px;
+    }
+    .cta-slider input[type="range"]::-webkit-slider-thumb{
+      -webkit-appearance:none; appearance:none;
+      width: 36px; height: 36px; margin-top:-12px;
+      background: var(--pill);
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 6px 16px rgba(0,0,0,.25);
+      cursor: pointer;
+    }
+    .cta-slider input[type="range"]::-moz-range-thumb{
+      width: 36px; height: 36px; background: var(--pill);
+      border: 3px solid #fff; border-radius: 50%;
+      box-shadow: 0 6px 16px rgba(0,0,0,.25);
+      cursor: pointer;
+    }
+    .cta-marks{
+      display:flex; flex-wrap: wrap; gap:6px;
+      justify-content:center; font-size: 11px; color: var(--muted);
+      padding: 0 4px;
+    }
+    .cta-marks span{
+      background:#fff; border:1px solid #e7d8c5; padding:4px 9px; border-radius:999px;
+    }
+    .cta-marks .oos{ opacity:.45; text-decoration: line-through; }
+    .cta-marks .active{
+      border-color: #2b1a10;
+      box-shadow: 0 0 0 2px #2b1a10 inset;
+      color: #2b1a10;
+      font-weight: 800;
+    }
+
+    .btn{
+      display:inline-grid; place-items:center;
+      border-radius: 12px; padding: 16px;
+      font-weight: 900; letter-spacing:.2px; text-decoration:none; user-select:none;
+      border: none; cursor: pointer;
+      width: 100%;
+      max-width: 100%;
+    }
+    .btn-primary{
+      background: linear-gradient(180deg, #2b1a10, #3b2415);
+      color: #fff;
+      box-shadow: 0 10px 26px rgba(43,26,16,.35);
+      font-size: 18px;
+    }
+    .btn-disabled{
+      background: #ccc; color:#666; box-shadow:none; cursor:not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="brand">
+       
+        <div id="brandText">YouChews</div>
+      </div>
+      <div class="title" id="pageTitle">CoffeeChews</div>
+    </header>
+
+    <div class="meta">
+      <div class="pill" id="chewsPill">10 Chews</div>
+      <div class="pill" id="pricePill">$14.99</div>
+      <!-- stock pill removed per request -->
+    </div>
+
+    <section class="card">
+      <!-- Visual + Meta -->
+      <div class="product-visual">
+        <div class="img-wrap smooth">
+          <!-- Savings overlay (expands left) -->
+          <div class="save-overlay smooth">
+            <div class="big" id="saveBig">You save $0.00</div>
+            <div class="sub" id="saveDetail">vs buying coffees</div>
+          </div>
+
+          <img id="productImage" class="fade" alt="Selected packaging"/>
+        </div>
+
+        <!-- Cups hype stays at bottom of scrollable area -->
+        <div class="cups-block">
+          <div class="cups-grid" id="cupsGrid"></div>
+          <div class="cups-summary">
+            <span class="badge" id="cupsCount">10 cups total</span>
+            <span class="badge" id="perCupCost">$1.50 per cup (chew)</span>
+            <span class="badge" id="compareCoffee">@ $3.50 coffee</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Anchored CTA with slider -->
+  <div class="cta-bar">
+    <div class="cta-inner">
+      <div class="cta-title" id="ctaMsg">Best match in stock will be selected automatically</div>
+
+      <div class="cta-slider">
+        <div class="track-pad">
+          <input type="range" id="range" min="0" max="3" step="1" value="0" aria-label="Packaging size slider">
+        </div>
+        <div class="cta-marks" id="marks" aria-live="polite"></div>
+      </div>
+
+      <button class="btn btn-primary" id="btnNext">NEXT →</button>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+
+     const DEFAULTS = [
+        { chews: 5,  price:  9.99, img: "assets/chews5.png",  amazon: "https://www.amazon.com/", stock: 42 },
+        { chews: 10, price: 14.99, img: "assets/chews10.png", amazon: "https://www.amazon.com/", stock: 30 },
+        { chews: 30, price: 29.99, img: "assets/chews30.png", amazon: "https://www.amazon.com/", stock: 12 },
+        { chews: 60, price: 49.99, img: "assets/chews60.png", amazon: "https://www.amazon.com/", stock: 6  },
+        ];
+
+
+    const products = DEFAULTS.map((p, i) => {
+      const idx = i + 1;
+      const pp = params.get("p" + idx);
+      let chews = p.chews, price = p.price;
+      if (pp) {
+        const [c, pr] = pp.split("-");
+        const cInt = parseInt(c, 10);
+        const prF = parseFloat(pr);
+        if (!Number.isNaN(cInt)) chews = cInt;
+        if (!Number.isNaN(prF)) price = prF;
+      }
+      const img = params.get("img" + idx) || p.img;
+      const amazon = params.get("a" + idx) || p.amazon;
+      const s = params.get("s" + idx);
+      const stock = s !== null ? Math.max(0, parseInt(s, 10) || 0) : p.stock;
+      return { chews, price, img, amazon, stock };
+    }).sort((a,b) => a.chews - b.chews);
+
+    const brandTextEl = document.getElementById("brandText");
+    const pageTitleEl = document.getElementById("pageTitle");
+    const brandText = params.get("brand") || "CoffeeChews";
+    brandTextEl.textContent = brandText;
+    document.title = `${brandText} – CoffeeChews`;
+
+    const COFFEE_PRICE = (() => {
+      const c = parseFloat(params.get("coffee"));
+      return Number.isFinite(c) && c > 0 ? c : 3.50;
+    })();
+
+    // DOM
+    const productImage  = document.getElementById("productImage");
+    const chewsPill     = document.getElementById("chewsPill");
+    const pricePill     = document.getElementById("pricePill");
+
+    const cupsGrid      = document.getElementById("cupsGrid");
+    const cupsCount     = document.getElementById("cupsCount");
+    const perCupCost    = document.getElementById("perCupCost");
+    const compareCoffee = document.getElementById("compareCoffee");
+
+    const range   = document.getElementById("range");
+    const marks   = document.getElementById("marks");
+
+    const saveBig    = document.getElementById("saveBig");
+    const saveDetail = document.getElementById("saveDetail");
+
+    const ctaMsg  = document.getElementById("ctaMsg");
+    const btnNext = document.getElementById("btnNext");
+
+    function currency(n){ return "$" + n.toFixed(2); }
+    function perUnit(price, qty){ return qty > 0 ? price / qty : 0; }
+    function pluralize(n, one, many){ return n === 1 ? one : many; }
+
+    function firstInStockFrom(idx){
+      if (products[idx] && products[idx].stock > 0) return idx;
+      for (let i = idx + 1; i < products.length; i++) if (products[i].stock > 0) return i;
+      for (let i = idx - 1; i >= 0; i--) if (products[i].stock > 0) return i;
+      return -1;
+    }
+
+    function setMarks(){
+      marks.innerHTML = "";
+      products.forEach((p, i) => {
+        const m = document.createElement("span");
+        m.textContent = `${p.chews} Chews`;
+        m.dataset.index = String(i);
+        if (p.stock <= 0) m.classList.add("oos");
+        marks.appendChild(m);
+      });
+    }
+
+    function highlightActiveMark(idx){
+      const nodes = [...marks.children];
+      nodes.forEach(el => el.classList.remove("active"));
+      const el = nodes[idx];
+      if (el) el.classList.add("active");
+    }
+
+    function renderCupsGrid(chews){
+      cupsGrid.innerHTML = "";
+      const MAX_ICONS = 120; // guard
+      const show = Math.min(MAX_ICONS, chews);
+      for (let i = 0; i < show; i++){
+        const s = document.createElement("span");
+        s.className = "cup";
+        s.textContent = "☕";
+        cupsGrid.appendChild(s);
+      }
+      if (chews > MAX_ICONS){
+        const dots = document.createElement("span");
+        dots.className = "cup muted";
+        dots.textContent = "…";
+        cupsGrid.appendChild(dots);
+        const more = document.createElement("span");
+        more.className = "cup";
+        more.textContent = `+${chews - MAX_ICONS}`;
+        cupsGrid.appendChild(more);
+      }
+    }
+
+    function updateSavingsUI(p){
+      const coffeeCost = COFFEE_PRICE * p.chews;
+      const save = Math.max(0, coffeeCost - p.price);
+      const pct = coffeeCost > 0 ? (save / coffeeCost) * 100 : 0;
+
+      saveBig.textContent = `You save ${currency(save)} (${pct.toFixed(0)}%)`;
+      saveDetail.textContent = `vs ${p.chews} ${pluralize(p.chews, "coffee", "coffees")} @ ${currency(COFFEE_PRICE)}`;
+      perCupCost.textContent = `${currency(perUnit(p.price, p.chews))} per cup (chew)`;
+      compareCoffee.textContent = `@ ${currency(COFFEE_PRICE)} coffee`;
+    }
+
+    function swapImage(src, alt){
+      productImage.style.opacity = 0.01;
+      const img = new Image();
+      img.onload = () => {
+        productImage.src = src;
+        productImage.alt = alt;
+        productImage.style.opacity = 1;
+      };
+      img.src = src;
+    }
+
+    function updateHeaderTitle(chews){
+      // Dynamic: “X Chews = X ☕ Cups”
+      const cupsWord = pluralize(chews, "Cup", "Cups");
+      pageTitleEl.textContent = `${chews} Chews = ${chews}☕ ${cupsWord}`;
+    }
+
+    function updateUI(idx){
+      const bestIdx = firstInStockFrom(idx);
+      const target = bestIdx >= 0 ? products[bestIdx] : products[idx];
+
+      swapImage(target.img, `${target.chews} CoffeeChews`);
+      chewsPill.textContent = `${target.chews} Chews`;
+      pricePill.textContent = currency(target.price);
+
+      // Dynamic header text
+      updateHeaderTitle(target.chews);
+
+      renderCupsGrid(target.chews);
+      cupsCount.textContent = `${target.chews} ${pluralize(target.chews, "cup", "cups")} total`;
+      updateSavingsUI(target);
+
+      // CTA state + active mark
+      if (bestIdx === -1){
+        ctaMsg.textContent = "All options are currently out of stock.";
+        btnNext.classList.add("btn-disabled");
+        btnNext.disabled = true;
+        btnNext.dataset.href = "";
+        highlightActiveMark(-1);
+      } else {
+        const label = "Pick Your Saving Size";
+        ctaMsg.textContent = label;
+        btnNext.classList.remove("btn-disabled");
+        btnNext.disabled = false;
+        btnNext.dataset.href = products[bestIdx].amazon || "";
+        highlightActiveMark(bestIdx);
+      }
+
+      range.dataset.currentIndex = String(idx);
+    }
+
+    (function init(){
+      range.min = 0;
+      range.max = products.length - 1;
+      range.value = 0;
+
+      setMarks();
+
+      // Initialize header with first in-stock option for correctness
+      const initialBest = firstInStockFrom(0);
+      const initIdx = initialBest >= 0 ? initialBest : 0;
+      updateUI(initIdx);
+      range.value = String(initIdx);
+
+      range.addEventListener("input", () => updateUI(parseInt(range.value, 10)));
+
+      // Tap on marks also moves slider
+      marks.addEventListener("click", (e) => {
+        const el = e.target.closest("span[data-index]");
+        if (!el) return;
+        const i = parseInt(el.dataset.index, 10);
+        range.value = String(i);
+        updateUI(i);
+      });
+
+      btnNext.addEventListener("click", () => {
+        const href = btnNext.dataset.href || "";
+        if (!href){
+          alert("No product page available.");
+          return;
+        }
+        window.location.href = href;
+      });
+
+      // Re-render cups on resize (keeps rows tidy)
+      window.addEventListener("resize", () => {
+        const idx = parseInt(range.dataset.currentIndex || "0", 10);
+        const bestIdx = firstInStockFrom(idx);
+        const p = bestIdx >= 0 ? products[bestIdx] : products[idx];
+        renderCupsGrid(p.chews);
+      });
+    })();
+  </script>
+</body>
+</html>
