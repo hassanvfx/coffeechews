@@ -33,6 +33,16 @@
 
       --maxw: 980px;
       --side-pad: 16px;
+
+      /* Header */
+      --hdr-bg: #232f3e;
+      --hdr-bg-2: #1f2937;
+      --hdr-text: #fff;
+      --hdr-muted: #d1d5db;
+      --hdr-accent: #febd69;
+      --hdr-pill: #374151;
+      --hdr-shadow: 0 6px 24px rgba(0,0,0,.18);
+      --hdr-radius: 12px;
     }
     @media (prefers-reduced-motion:no-preference){
       .smooth{ transition: all .22s ease; }
@@ -40,33 +50,104 @@
       .hover-rise:hover{ transform: translateY(-2px); }
     }
 
-    .wrap{
-      width: 100%;
+    /* ---------- AMAZON-LITE HEADER ---------- */
+    .amazon-header{
+      position: sticky; top: 0; z-index: 50;
+      background: var(--hdr-bg);
+      color: var(--hdr-text);
+      box-shadow: var(--hdr-shadow);
+    }
+    .hdr-wrap{
       max-width: var(--maxw);
       margin: 0 auto;
-      padding: 16px var(--side-pad) 32px;
+      padding: 10px var(--side-pad);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+    }
+    .hdr-left{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .hdr-logo{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--hdr-text); }
+    .hdr-logo-img{ height: 26px; width: auto; display:block; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,.25)); }
+    @media (min-width: 860px){ .hdr-logo-img{ height: 30px; } }
+    .hdr-deliver{
+      display:flex; align-items:center; gap:8px;
+      background: var(--hdr-pill);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: var(--hdr-muted);
+      font-size: 12px;
+      white-space:nowrap;
+      cursor:pointer;
+    }
+    .hdr-pin{ width:14px; height:14px; display:inline-block; }
+
+    .hdr-search{ display:flex; align-items:stretch; gap:8px; min-width: 0; }
+    .hdr-search form{
+      display:flex; align-items:center; gap:0; width:100%;
+      background:#fff; border-radius:999px; overflow:hidden;
+      border:1px solid #e5e7eb;
+    }
+    .hdr-search input[type="search"]{ appearance:none; border:none; outline:none; width:100%; padding:12px 14px; font-size:14px; }
+    .hdr-search button[type="submit"]{ border:none; background: var(--hdr-accent); color:#111827; padding: 10px 14px; font-weight:900; cursor:pointer; }
+
+    .hdr-right{ display:flex; align-items:center; gap:14px; white-space:nowrap; }
+    .hdr-link{ display:grid; grid-auto-flow:column; align-items:center; gap:8px; color:var(--hdr-text); text-decoration:none; font-size:12px; cursor:pointer; }
+    .hdr-link .top{ color:var(--hdr-muted); display:block; line-height:1; }
+    .hdr-link .bot{ display:block; line-height:1.1; font-weight:800; }
+    .hdr-ico{ width:18px; height:18px; display:inline-block; }
+    .hdr-cart{
+      position:relative; display:inline-grid; place-items:center;
+      width:34px; height:34px; border-radius:10px; background: var(--hdr-pill);
+      text-decoration:none; color:var(--hdr-text);
+      cursor:pointer;
+    }
+    .hdr-cart-badge{
+      position:absolute; top:-6px; right:-6px;
+      background:#f43f5e; color:#fff; font-weight:900; font-size:10px;
+      min-width:18px; height:18px; border-radius:999px;
+      display:grid; place-items:center; padding:0 5px;
+      box-shadow: 0 4px 10px rgba(0,0,0,.25);
     }
 
+    .amazon-subbar{ background: var(--hdr-bg-2); color: var(--hdr-text); font-size:12px; }
+    .sub-wrap{
+      max-width: var(--maxw); margin:0 auto; padding: 8px var(--side-pad);
+      display:flex; gap:14px; overflow:auto; scrollbar-width: none;
+    }
+    .sub-wrap::-webkit-scrollbar{ display:none; }
+    .sub-link{
+      color:#e5e7eb; text-decoration:none; opacity:.9;
+      padding: 6px 10px; border-radius: 999px; cursor:pointer;
+    }
+    .sub-link:hover{ background: rgba(255,255,255,.08); }
+
+    @media (max-width: 860px){
+      .hdr-wrap{
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "left right"
+            "search search";
+      }
+      .hdr-left{ grid-area:left; }
+      .hdr-right{ grid-area:right; }
+      .hdr-search{ grid-area:search; }
+    }
+    @media (max-width: 520px){ .hdr-right .hdr-link .top{ display:none; } }
+
+    /* ---------- PAGE CONTENT ---------- */
+    .wrap{ width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 16px var(--side-pad) 32px; }
+
     header.hero{
-      display:grid; gap: 8px;
-      align-items:center; justify-items:center; text-align:center;
+      display:grid; gap: 8px; align-items:center; justify-items:center; text-align:center;
       padding: 18px 0 8px;
     }
     .brand{ display:flex; gap:10px; align-items:center; font-weight:900; letter-spacing:.5px; }
-    .brand-logo{
-      width:36px; height:36px; border-radius:10px;
-      background: linear-gradient(135deg, #7b4b2a, #c08952);
-      box-shadow: var(--shadow);
-      flex: 0 0 auto;
-    }
     .title{ font-size: clamp(22px, 6vw, 36px); line-height:1.05; font-weight:900; }
     .subtitle{ font-size: 14px; color: var(--muted); }
 
     /* ---------- MASONRY GRID (2 columns) ---------- */
-    .masonry{
-      column-count: 2;
-      column-gap: 14px;
-    }
+    .masonry{ column-count: 2; column-gap: 14px; }
     @media (max-width: 640px){ .masonry{ column-count: 2; } }
     @media (max-width: 460px){ .masonry{ column-count: 1; } }
 
@@ -81,128 +162,192 @@
       border: 1px solid #efdfcb;
     }
 
-    /* Featured look (default 30 chews) */
     .plan-card.featured{
-      background: #2b1a10;
-      color: #fff;
-      border: 1px solid #2b1a10;
-      box-shadow: 0 18px 40px rgba(43,26,16,.25);
-      position: relative;
-      isolation: isolate;
+      background: #2b1a10; color: #fff; border: 1px solid #2b1a10;
+      box-shadow: 0 18px 40px rgba(43,26,16,.25); position: relative; isolation: isolate;
     }
     .plan-card.featured::before{
       content:"Most Popular";
-      position:absolute; top:10px; left:10px;
-      z-index:2;
+      position:absolute; top:10px; left:10px; z-index:2;
       font-size: 11px; font-weight: 900; letter-spacing:.3px;
-      background: #ffd6a3;
-      color:#2b1a10;
-      padding:6px 10px; border-radius:999px;
-      box-shadow: 0 6px 16px rgba(0,0,0,.2);
+      background: #ffd6a3; color:#2b1a10;
+      padding:6px 10px; border-radius:999px; box-shadow: 0 6px 16px rgba(0,0,0,.2);
     }
 
-    /* Visual area */
     .img-wrap{
-      position: relative;
-      width: 100%;
-      background: #f3ece5;
-      border-bottom: 1px solid var(--accent-2);
-      display:grid; place-items:center;
-      overflow: hidden;
-      padding: 10px;
+      position: relative; width: 100%; background: #f3ece5; border-bottom: 1px solid var(--accent-2);
+      display:grid; place-items:center; overflow: hidden; padding: 10px;
     }
     .plan-card.featured .img-wrap{ background: #392417; border-bottom-color:#3f2a1a; }
-    .plan-card img{
-      width: 100%; height: auto; display:block; object-fit: contain;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,.12));
-      opacity: .999;
-      border-radius: 12px;
-    }
+    .plan-card img{ width: 100%; height: auto; display:block; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,.12)); opacity: .999; border-radius: 12px; }
 
-    /* Savings overlay */
     .save-overlay{
-      position: absolute; top: 10px; right: 10px;
-      display: inline-flex; flex-direction: column; align-items: flex-end; gap: 4px;
+      position: absolute; top: 10px; right: 10px; display: inline-flex; flex-direction: column; align-items: flex-end; gap: 4px;
       background: linear-gradient(135deg, rgba(26,137,23,.92), rgba(26,137,23,.78));
-      color: #fff; border-radius: 12px; padding: 10px 12px;
-      box-shadow: 0 10px 26px rgba(0,0,0,.25);
-      backdrop-filter: blur(6px);
-      pointer-events: none;
-      z-index: 2;
+      color: #fff; border-radius: 12px; padding: 10px 12px; box-shadow: 0 10px 26px rgba(0,0,0,.25); backdrop-filter: blur(6px); pointer-events: none; z-index: 2;
       transform-origin: top right;
     }
     .save-overlay .big{ font-size: clamp(15px, 3.8vw, 22px); font-weight: 900; line-height: 1.05; white-space: nowrap; }
     .save-overlay .sub{ font-size: 12px; opacity:.95; }
 
-    /* Content area */
     .plan-body{ padding: 14px 14px 6px; }
-    .plan-head{
-      display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom: 8px;
-    }
+    .plan-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom: 8px; }
     .plan-title{ font-weight: 900; font-size: 18px; line-height: 1.1; }
     .plan-price{ font-weight: 900; font-size: 18px; }
     .plan-sub{ color: var(--muted); font-size: 13px; }
     .plan-card.featured .plan-sub{ color: #e8dcca; }
 
-    /* Cups block (mini) */
     .cups-block{
-      background: #fff8ee;
-      border:1px dashed #e9d6bd;
-      border-radius: 12px;
-      padding: 10px;
-      display:grid; gap:8px;
-      width: 100%;
+      background: #fff8ee; border:1px dashed #e9d6bd; border-radius: 12px; padding: 10px; display:grid; gap:8px; width: 100%;
     }
-    .plan-card.featured .cups-block{
-      background:#3a2a1f; border-color:#5a3d2b;
-    }
-    .cups-grid{
-      display:grid;
-      grid-template-columns: repeat(12, minmax(12px, 1fr));
-      gap: 4px;
-      justify-items:center; width:100%;
-    }
+    .plan-card.featured .cups-block{ background:#3a2a1f; border-color:#5a3d2b; }
+    .cups-grid{ display:grid; grid-template-columns: repeat(12, minmax(12px, 1fr)); gap: 4px; justify-items:center; width:100%; }
     .cup{ font-size: 1.5rem; line-height:1; }
     .cup.muted{ opacity:.4; }
-    .cups-summary{
-      display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center;
-      font-weight:800;
-      color: var(--pill);
-    }
+    .cups-summary{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center; font-weight:800; color: var(--pill); }
     .plan-card.featured .cups-summary{ color:#fff; }
-    .badge{
-      background:#fff; border:1px solid #e7d8c5; padding:6px 10px; border-radius:999px; font-size: 12px;
-    }
-    .plan-card.featured .badge{
-      background:#2b1a10; border-color:#5a3d2b; color:#fff;
-    }
+    .badge{ background:#fff; border:1px solid #e7d8c5; padding:6px 10px; border-radius:999px; font-size: 12px; }
+    .plan-card.featured .badge{ background:#2b1a10; border-color:#5a3d2b; color:#fff; }
 
     .actions{ padding: 8px 14px 16px; }
-    .btn{
-      display:grid; place-items:center; width:100%;
-      border-radius: 12px; padding: 14px;
-      font-weight: 900; letter-spacing:.2px; text-decoration:none; user-select:none;
-      border: none; cursor: pointer;
-    }
-    .btn-primary{
-      background: linear-gradient(180deg, #2b1a10, #3b2415);
-      color: #fff; box-shadow: 0 10px 26px rgba(43,26,16,.35);
-      font-size: 16px;
-    }
-    .plan-card.featured .btn-primary{
-      background: linear-gradient(180deg, #ffe0b8, #ffc98e);
-      color:#2b1a10; box-shadow: 0 12px 30px rgba(255,201,142,.35);
-    }
+    .btn{ display:grid; place-items:center; width:100%; border-radius: 12px; padding: 14px; font-weight: 900; letter-spacing:.2px; text-decoration:none; user-select:none; border: none; cursor: pointer; }
+    .btn-primary{ background: linear-gradient(180deg, #2b1a10, #3b2415); color: #fff; box-shadow: 0 10px 26px rgba(43,26,16,.35); font-size: 16px; }
+    .plan-card.featured .btn-primary{ background: linear-gradient(180deg, #ffe0b8, #ffc98e); color:#2b1a10; box-shadow: 0 12px 30px rgba(255,201,142,.35); }
 
-    /* tiny helpers */
     .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    /* ---------- NEW: Bottom Video Section ---------- */
+    .video-cta{
+      margin-top: 8px;
+      border-top: 1px solid #efdfcb;
+      padding-top: 18px;
+    }
+    .video-cta .cta-card{
+      background:#fff;
+      border:1px solid #efdfcb;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .video-cta .cta-body{
+      padding: 18px 16px 6px;
+    }
+    .video-cta h3{
+      margin:0 0 8px;
+      font-size: clamp(18px, 3.6vw, 24px);
+      line-height:1.15;
+      font-weight:900;
+      letter-spacing:.2px;
+      color:#1c130d;
+    }
+    .video-cta p{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .video-cta .cta-foot{
+      padding: 12px 12px 14px;
+    }
+    /* Responsive 16:9 wrapper that keeps Vimeo embed fluid */
+    .ratio-16x9{
+  position:relative;
+  width:100%;
+  padding-top:100%; /* your 16:9 trick */
+  background:#f3ece5;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid var(--accent-2);
+}
+
+/* desktop: cap width at 60% and center it */
+    @media (min-width: 860px){
+      .ratio-16x9{
+         padding-top:60%; /* your 16:9 trick */
+        margin-left:auto;
+        margin-right:auto;
+      }
+    }
+    .ratio-16x9 iframe{
+      position:absolute; top:0; left:0; width:100%; height:100%;
+    }
   </style>
 </head>
 <body>
+
+  <!-- AMAZON-LITE HEADER -->
+  <header class="amazon-header" id="hdrRoot">
+    <div class="hdr-wrap">
+      <!-- Left -->
+      <div class="hdr-left">
+        <a class="hdr-logo" id="hdrLogo" href="#">
+          <img src="assets/amazon.png" alt="Amazon" class="hdr-logo-img" />
+        </a>
+        <div class="hdr-deliver" id="hdrDeliver" title="Ship destination">
+          <svg class="hdr-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>
+          <span><span style="opacity:.8;">Deliver to</span> <strong id="hdrShip">US</strong></span>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="hdr-search">
+        <form id="hdrSearch" action="#" method="GET" role="search">
+          <input type="search" id="hdrSearchInput" placeholder="Search on Amazon…" aria-label="Search"/>
+          <button type="submit" aria-label="Go">Search</button>
+        </form>
+      </div>
+
+      <!-- Right -->
+      <div class="hdr-right">
+        <a class="hdr-link" id="hdrAccount" href="#">
+          <svg class="hdr-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-5.33 0-8 2.67-8 6v2h16v-2c0-3.33-2.67-6-8-6z"/></svg>
+          <span><span class="top">Hello, sign in</span><span class="bot">Account &amp; Lists</span></span>
+        </a>
+        <a class="hdr-link" id="hdrOrders" href="#">
+          <svg class="hdr-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4h-2v2h2v14h2v-14h2v-2zm12 4h-8v2h8zm-8 4h8v2h-8zm0 4h8v2h-8z"/></svg>
+          <span><span class="top">Returns</span><span class="bot">&amp; Orders</span></span>
+        </a>
+        <a class="hdr-cart" id="hdrCart" href="#" aria-label="Cart">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 18a2 2 0 1 0 2 2 2 2 0 0 0-2-2zm10 0a2 2 0 1 0 2 2 2 2 0 0 0-2-2zM7.2 14h10.5a2 2 0 0 0 1.93-1.52l1.18-5.09A1 1 0 0 0 19.84 6H6.21l-.38-2H2v2h2l2.2 9z"/></svg>
+          <span class="hdr-cart-badge" id="hdrCartCount">0</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Slim category vibe (all forward to Amazon URL) -->
+    <nav class="amazon-subbar" aria-label="Quick links">
+      <div class="sub-wrap">
+        <a class="sub-link" id="subSubscribe" href="#">Subscribe & Save</a>
+        <a class="sub-link" id="subDeals" href="#">Deals</a>
+        <a class="sub-link" id="subBest" href="#">Best Sellers</a>
+        <a class="sub-link" id="subSupport" href="#">Customer Support</a>
+      </div>
+    </nav>
+  </header>
+
   <div class="wrap">
-    <header class="hero">
+   
+
+    <!-- ▾▾ NEW: Motivational Blurb + Vimeo Embed ▾▾ -->
+    <section class="video-cta" aria-label="See CoffeeChews in action">
+      <div class="cta-card">
+        
+        <div class="cta-foot">
+          <div class="ratio-16x9">
+            <!-- Your Vimeo embed -->
+            <iframe
+              src="https://player.vimeo.com/video/1117297185?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+              frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              title="YouChewsPolishedV2"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+      <header class="hero">
       <div class="brand">
-        <div id="brandText">YouChews</div>
+        <div id="brandText">CoffeeChews</div>
       </div>
       <div class="title">Pick Your Saving Size</div>
       <div class="subtitle">1 Chew = 1☕️ Cup</div>
@@ -210,16 +355,50 @@
 
     <!-- Masonry Grid of Plans -->
     <section class="masonry" id="planGrid" aria-label="Available plans"></section>
+
+    
+    <!-- ▴▴ END new section ▴▴ -->
   </div>
 
+  <!-- Vimeo player API (optional but harmless if you later hook events) -->
+  <script src="https://player.vimeo.com/api/player.js"></script>
+
   <script>
+    const AMAZON_URL = "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B";
     const params = new URLSearchParams(location.search);
 
+    // ---------- Header dynamic bits ----------
+    const ship = params.get("ship") || "US";
+    document.getElementById("hdrShip").textContent = ship;
+    const cartCount = Math.max(0, parseInt(params.get("cart") || "0", 10) || 0);
+    document.getElementById("hdrCartCount").textContent = cartCount;
+
+    // Forward ALL header interactions to the Amazon PDP
+    function forward(e){
+      e.preventDefault();
+      window.location.href = AMAZON_URL;
+    }
+
+    // Clickables in header
+    document.getElementById("hdrLogo").addEventListener("click", forward);
+    document.getElementById("hdrDeliver").addEventListener("click", forward);
+    document.getElementById("hdrAccount").addEventListener("click", forward);
+    document.getElementById("hdrOrders").addEventListener("click", forward);
+    document.getElementById("hdrCart").addEventListener("click", forward);
+    document.getElementById("subSubscribe").addEventListener("click", forward);
+    document.getElementById("subDeals").addEventListener("click", forward);
+    document.getElementById("subBest").addEventListener("click", forward);
+    document.getElementById("subSupport").addEventListener("click", forward);
+
+    // Search submit also forwards (ignores query)
+    document.getElementById("hdrSearch").addEventListener("submit", forward);
+
+    // ---------- Products grid ----------
     const DEFAULTS = [
-      { chews: 5,  price:  9.99, img: "assets/chews5.jpg",  amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_B82922D0E892A1ABB0A49127FE1C7EC5_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 1 },
-      { chews: 10, price: 14.99, img: "assets/chews10.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_50391CFB3CCE23F38F47FB37398B31C7_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 1 },
-      { chews: 30, price: 29.99, img: "assets/chews30.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_0A01F090F37E839DA0308E98223BFE26_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 12 },
-      { chews: 60, price: 49.99, img: "assets/chews60.jpg", amazon: "http://amazon.com/YouChews-Coffee-Chews-Caffeine-Ingredients/dp/B0CGSMNKZF?maas=maas_adg_DE10801AC9B210D2B47252508EA4EB93_afap_abs&ref_=aa_maas&tag=maas", stock: 6  },
+      { chews: 5,  price:  9.99, img: "assets/chews5.jpg",  amazon: AMAZON_URL, stock: 1 },
+      { chews: 10, price: 14.99, img: "assets/chews10.jpg", amazon: AMAZON_URL, stock: 1 },
+      { chews: 30, price: 29.99, img: "assets/chews30.jpg", amazon: AMAZON_URL, stock: 12 },
+      { chews: 60, price: 49.99, img: "assets/chews60.jpg", amazon: AMAZON_URL, stock: 6  },
     ];
 
     const products = DEFAULTS.map((p, i) => {
@@ -234,16 +413,12 @@
         if (!Number.isNaN(prF)) price = prF;
       }
       const img = params.get("img" + idx) || p.img;
-      const amazon = params.get("a" + idx) || p.amazon;
       const s = params.get("s" + idx);
       const stock = s !== null ? Math.max(0, parseInt(s, 10) || 0) : p.stock;
-      return { chews, price, img, amazon, stock };
+      return { chews, price, img, amazon: AMAZON_URL, stock };
     }).sort((a,b) => a.chews - b.chews);
 
-    const brandTextEl = document.getElementById("brandText");
-    const brandText = params.get("brand") || "CoffeeChews";
-    brandTextEl.textContent = brandText;
-    document.title = `${brandText} – CoffeeChews`;
+   
 
     const COFFEE_PRICE = (() => {
       const c = parseFloat(params.get("coffee"));
@@ -267,7 +442,7 @@
     }
 
     function cupsGridHTML(chews){
-      const MAX = 48; // mini grid cap per card
+      const MAX = 48;
       const show = Math.min(MAX, chews);
       let html = "";
       for (let i = 0; i < show; i++) html += `<span class="cup">☕</span>`;
@@ -309,9 +484,9 @@
           </div>
 
           <div class="actions">
-            <a class="btn btn-primary ${oos ? "btn-disabled" : ""}" ${oos ? 'aria-disabled="true" tabindex="-1"' : `href="${p.amazon}"`}
+            <a class="btn btn-primary ${oos ? "btn-disabled" : ""}" ${oos ? 'aria-disabled="true" tabindex="-1"' : `href="${AMAZON_URL}"`}
                rel="noopener" target="_self">
-               ${oos ? "Out of Stock" : "Choose →"}
+               ${oos ? "Out of Stock" : "Add To Cart →"}
             </a>
           </div>
         </article>
@@ -322,16 +497,16 @@
       const grid = document.getElementById("planGrid");
       grid.innerHTML = products.map(buildCard).join("");
 
-      // Optional: click anywhere on card (except when OOS) to choose
+      // Click anywhere on card (not OOS) → Amazon PDP
       grid.addEventListener("click", (e) => {
         const a = e.target.closest("a.btn");
-        if (a) return; // button already handles
+        if (a) return; // button handles itself
         const card = e.target.closest(".plan-card");
         if (!card) return;
         const chews = parseInt(card.dataset.chews, 10);
         const p = products.find(x => x.chews === chews);
         if (!p || p.stock <= 0) return;
-        window.location.href = p.amazon;
+        window.location.href = AMAZON_URL;
       });
     })();
   </script>
