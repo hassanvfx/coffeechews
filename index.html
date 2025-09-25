@@ -508,7 +508,7 @@
   <script src="https://player.vimeo.com/api/player.js"></script>
 
   <script>
-    const AMAZON_URL = "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B";
+    const AMAZON_URL = "https://urlgeni.us/amazon/CoffeeChews30";
     const params = new URLSearchParams(location.search);
 
     // ---------- Header dynamic bits ----------
@@ -619,7 +619,7 @@
           </div>
 
           <div class="actions">
-            <a class="btn btn-primary ${oos ? "btn-disabled" : ""}" ${oos ? 'aria-disabled="true" tabindex="-1"' : `href="${AMAZON_URL}"`}
+            <a class="btn btn-primary ${oos ? "btn-disabled" : ""}" ${oos ? 'aria-disabled="true" tabindex="-1"' : `href="${p.amazon}"`}
                rel="noopener" target="_self">
                ${oos ? "Out of Stock" : "Add To Cart →"}
             </a>
