@@ -43,6 +43,13 @@
       --hdr-pill: #374151;
       --hdr-shadow: 0 6px 24px rgba(0,0,0,.18);
       --hdr-radius: 12px;
+
+      /* Amazon button colors */
+      --amz-yellow-1: #ffd814;   /* top */
+      --amz-yellow-2: #f7ca00;   /* bottom */
+      --amz-yellow-3: #f0b800;   /* hover bottom */
+      --amz-border:   #f2b400;   /* border */
+      --amz-text:     #111;      /* text */
     }
     @media (prefers-reduced-motion:no-preference){
       .smooth{ transition: all .22s ease; }
@@ -210,9 +217,50 @@
     .plan-card.featured .badge{ background:#2b1a10; border-color:#5a3d2b; color:#fff; }
 
     .actions{ padding: 8px 14px 16px; }
-    .btn{ display:grid; place-items:center; width:100%; border-radius: 12px; padding: 14px; font-weight: 900; letter-spacing:.2px; text-decoration:none; user-select:none; border: none; cursor: pointer; }
-    .btn-primary{ background: linear-gradient(180deg, #2b1a10, #3b2415); color: #fff; box-shadow: 0 10px 26px rgba(43,26,16,.35); font-size: 16px; }
-    .plan-card.featured .btn-primary{ background: linear-gradient(180deg, #ffe0b8, #ffc98e); color:#2b1a10; box-shadow: 0 12px 30px rgba(255,201,142,.35); }
+
+    /* ---------- Amazon-style CTA ---------- */
+    .btn{ display:inline-grid; place-items:center; user-select:none; text-decoration:none; }
+    .btn-amz{
+      display:grid;
+      grid-auto-flow:column;
+      grid-auto-columns:max-content;
+      gap:8px;
+      place-content:center;
+      width:100%;
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-weight: 900;
+      letter-spacing:.2px;
+      border: 1px solid var(--amz-border);
+      color: var(--amz-text);
+      background: linear-gradient(180deg, var(--amz-yellow-1), var(--amz-yellow-2));
+      box-shadow: 0 2px 6px rgba(0,0,0,.12);
+      cursor:pointer;
+      font-size:16px;
+    }
+    .btn-amz:hover{
+      background: linear-gradient(180deg, var(--amz-yellow-1), var(--amz-yellow-3));
+      box-shadow: 0 3px 10px rgba(0,0,0,.16);
+    }
+    .btn-amz:active{
+      transform: translateY(1px);
+      box-shadow: inset 0 2px 0 rgba(0,0,0,.12);
+    }
+    .btn-amz:focus-visible{
+      outline: 2px solid #111;
+      outline-offset: 2px;
+    }
+    .btn-amz .ico{
+      width:18px; height:18px; display:inline-block; vertical-align:-3px;
+    }
+    .btn-amz.btn-disabled,
+    .btn-amz[aria-disabled="true"]{
+      background: linear-gradient(180deg,#efefef,#e5e5e5);
+      color:#8a8a8a;
+      border-color:#cfcfcf;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
 
     .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 
@@ -229,9 +277,7 @@
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .video-cta .cta-body{
-      padding: 18px 16px 6px;
-    }
+    .video-cta .cta-body{ padding: 18px 16px 6px; }
     .video-cta h3{
       margin:0 0 8px;
       font-size: clamp(18px, 3.6vw, 24px);
@@ -240,15 +286,10 @@
       letter-spacing:.2px;
       color:#1c130d;
     }
-    .video-cta p{
-      margin:0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-    .video-cta .cta-foot{
-      padding: 12px 12px 14px;
-    }
-    /* Responsive 16:9 wrapper that keeps Vimeo embed fluid */
+    .video-cta p{ margin:0; color: var(--muted); font-size: 14px; }
+    .video-cta .cta-foot{ padding: 12px 12px 14px; }
+
+    /* Responsive 16:9 wrapper */
     .ratio-16x9{
       position:relative;
       width:100%;
@@ -259,15 +300,9 @@
       border:1px solid var(--accent-2);
     }
     @media (min-width: 860px){
-      .ratio-16x9{
-        padding-top:60%;
-        margin-left:auto;
-        margin-right:auto;
-      }
+      .ratio-16x9{ padding-top:60%; margin-left:auto; margin-right:auto; }
     }
-    .ratio-16x9 iframe{
-      position:absolute; top:0; left:0; width:100%; height:100%;
-    }
+    .ratio-16x9 iframe{ position:absolute; top:0; left:0; width:100%; height:100%; }
 
     /* ---------- FOOTER CTA BANNER ---------- */
     .footer-cta-wrap{ width:100%; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--side-pad) 28px; }
@@ -287,12 +322,8 @@
     }
     .footer-cta .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
     .footer-cta .copy{ min-width:0; display:grid; gap:2px; }
-    .footer-cta .headline{
-      font-weight:900; line-height:1.1; font-size: clamp(14px,3.4vw,18px);
-    }
-    .footer-cta .sub{
-      color: var(--muted); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    .footer-cta .headline{ font-weight:900; line-height:1.1; font-size: clamp(14px,3.4vw,18px); }
+    .footer-cta .sub{ color: var(--muted); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .footer-cta .pills{ display:flex; gap:8px; flex-wrap:wrap; }
     .footer-cta .pill{
       font-size:11px; font-weight:800; padding:6px 10px; border-radius:999px;
@@ -302,109 +333,55 @@
     .footer-cta .btn-ghost{
       border:none; background:transparent; color: var(--accent); font-weight:900; cursor:pointer; padding:10px 6px;
     }
-    .footer-cta .btn-cta{
-      border:none; border-radius:12px; padding:12px 14px; cursor:pointer;
-      background: linear-gradient(180deg, #2b1a10, #3b2415); color:#fff; font-weight:900;
-      box-shadow: 0 10px 26px rgba(43,26,16,.25);
-      text-decoration:none;
+
+    /* ---- FIX: prevent header overlap on small screens ---- */
+    @media (max-width: 560px){
+      .hdr-left{ flex-wrap: wrap; min-width: 0; }
+      .hdr-deliver{
+        flex: 1 1 100%;
+        margin-top: 6px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .hdr-right{ gap: 8px; }
+      .hdr-right .hdr-link .bot{ display: none; }
+      .hdr-link{ gap: 6px; }
+      .hdr-ico{ width: 20px; height: 20px; }
     }
-    @media (max-width:560px){
-  /* Layout becomes a tidy grid */
-  .footer-cta{
-    padding: 12px;
-    gap: 10px;
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    grid-template-areas:
-      "thumb copy"
-      "actions actions";
-    align-items: center;
-  }
-  .footer-cta .thumb{
-    grid-area: thumb;
-    width: 56px; height: 56px;
-    border-radius: 10px;
-  }
-  .footer-cta .copy{
-    grid-area: copy;
-    min-width: 0;
-  }
-  .footer-cta .headline{
-    font-size: 16px;
-    line-height: 1.15;
-    margin-bottom: 2px;
-  }
-  .footer-cta .sub{
-    font-size: 12px;
-    opacity: .9;
-  }
+    @media (max-width: 420px){
+      .hdr-right .hdr-link .top{ display: none; }
+    }
+    @media (max-width: 560px){
+      .hdr-deliver{ padding: 5px 8px; font-size: 11px; }
 
-  /* Pills wrap cleanly and scroll if they overflow */
-  .footer-cta .pills{
-    margin-top: 6px;
-    gap: 6px;
-    row-gap: 6px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 2px; /* avoid scrollbar overlap on iOS */
-  }
-  .footer-cta .pill{
-    font-size: 11px;
-    white-space: nowrap;
-    padding: 6px 10px;
-    border-radius: 999px;
-  }
-
-  /* CTA row: full-width button, keep it simple */
-  .footer-cta .actions{
-    grid-area: actions;
-    margin-left: 0;
-    margin-top: 2px;
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-  .footer-cta .btn-ghost{ display: none; }
-  .footer-cta .btn-cta{
-    width: 100%;
-    text-align: center;
-    padding: 14px 16px;
-    border-radius: 14px;
-    box-shadow: 0 8px 18px rgba(43,26,16,.22);
-  }
-}
-
-/* ---- FIX: prevent overlap on small screens ---- */
-@media (max-width: 560px){
-  /* Let the left section wrap so Deliver pill can drop below the logo */
-  .hdr-left{ flex-wrap: wrap; min-width: 0; }
-  .hdr-deliver{
-    flex: 1 1 100%;
-    margin-top: 6px;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* Tighten right side and hide long labels */
-  .hdr-right{ gap: 8px; }
-  .hdr-right .hdr-link .bot{ display: none; }   /* hide "Account & Lists", "& Orders" text */
-  .hdr-link{ gap: 6px; }                        /* tighter gaps */
-  .hdr-ico{ width: 20px; height: 20px; }        /* slightly larger icons for tap targets */
-}
-
-/* Extra-small screens: also hide the tiny "top" helper text */
-@media (max-width: 420px){
-  .hdr-right .hdr-link .top{ display: none; }   /* hide "Hello, sign in" / "Returns" */
-}
-
-/* Optional: soften the Deliver pill so it shrinks sooner */
-@media (max-width: 560px){
-  .hdr-deliver{
-    padding: 5px 8px;
-    font-size: 11px;
-  }
-}
-
+      /* Footer CTA responsive grid */
+      .footer-cta{
+        padding: 12px;
+        gap: 10px;
+        display: grid;
+        grid-template-columns: 56px 1fr;
+        grid-template-areas:
+          "thumb copy"
+          "actions actions";
+        align-items: center;
+      }
+      .footer-cta .thumb{
+        grid-area: thumb;
+        width: 56px; height: 56px;
+        border-radius: 10px;
+      }
+      .footer-cta .copy{ grid-area: copy; min-width: 0; }
+      .footer-cta .headline{ font-size: 16px; line-height: 1.15; margin-bottom: 2px; }
+      .footer-cta .sub{ font-size: 12px; opacity: .9; }
+      .footer-cta .pills{
+        margin-top: 6px; gap: 6px; row-gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px;
+      }
+      .footer-cta .pill{ font-size: 11px; white-space: nowrap; padding: 6px 10px; border-radius: 999px; }
+      .footer-cta .actions{ grid-area: actions; margin-left: 0; margin-top: 2px; display: grid; grid-template-columns: 1fr; }
+      .footer-cta .btn-ghost{ display: none; }
+      .footer-cta .btn-amz{ width: 100%; text-align: center; padding: 14px 16px; border-radius: 14px; box-shadow: 0 8px 18px rgba(43,26,16,.22); }
+    }
   </style>
 </head>
 <body>
@@ -447,11 +424,10 @@
         </a>
       </div>
     </div>
-
   </header>
 
   <div class="wrap">
-    <!-- ▾▾ NEW: Motivational Blurb + Vimeo Embed ▾▾ -->
+    <!-- Video -->
     <section class="video-cta" aria-label="See CoffeeChews in action">
       <div class="cta-card">
         <div class="cta-foot">
@@ -470,9 +446,7 @@
     </section>
 
     <header class="hero">
-      <div class="brand">
-        <div id="brandText">CoffeeChews</div>
-      </div>
+      <div class="brand"><div id="brandText">CoffeeChews</div></div>
       <div class="title">Pick Your Saving Size</div>
       <div class="subtitle">1 Chew = 1☕️ Cup</div>
     </header>
@@ -480,7 +454,7 @@
     <!-- Masonry Grid of Plans -->
     <section class="masonry" id="planGrid" aria-label="Available plans"></section>
 
-    <!-- Discreet Footer CTA -->
+    <!-- Footer CTA -->
     <div class="footer-cta-wrap">
       <section id="footerCta" class="footer-cta" aria-label="Popular pack">
         <div class="thumb" aria-hidden="true">
@@ -497,14 +471,17 @@
         </div>
         <div class="actions">
           <button class="btn-ghost" id="footerCtaLearn">Why CoffeeChews?</button>
-          <a class="btn-cta" id="footerCtaBtn" href="#" rel="noopener">Add to Cart →</a>
+          <a class="btn btn-amz" id="footerCtaBtn" href="#" rel="noopener">
+            <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M7 18a2 2 0 1 0 2 2 2 2 0 0 0-2-2zm10 0a2 2 0 1 0 2 2 2 2 0 0 0-2-2zM7.2 14h10.5a2 2 0 0 0 1.93-1.52l1.18-5.09A1 1 0 0 0 19.84 6H6.21l-.38-2H2v2h2l2.2 9z"/>
+            </svg>
+            Add to Cart
+          </a>
         </div>
       </section>
     </div>
-    <!-- ▴▴ END new section ▴▴ -->
   </div>
 
-  <!-- Vimeo player API (optional but harmless if you later hook events) -->
   <script src="https://player.vimeo.com/api/player.js"></script>
 
   <script>
@@ -517,7 +494,6 @@
     const cartCount = Math.max(0, parseInt(params.get("cart") || "0", 10) || 0);
     document.getElementById("hdrCartCount").textContent = cartCount;
 
-    // Forward ALL header interactions to the Amazon PDP
     function forward(e){
       e.preventDefault();
       window.location.href = AMAZON_URL;
@@ -530,13 +506,12 @@
     document.getElementById("hdrSearch").addEventListener("submit", forward);
 
     // ---------- Products grid ----------
-    const DEFAULTS = [ 
-    { chews: 5, price: 9.99, img: "assets/chews5.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_B82922D0E892A1ABB0A49127FE1C7EC5_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 1 }, 
-    { chews: 10, price: 14.99, img: "assets/chews10.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_50391CFB3CCE23F38F47FB37398B31C7_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 1 }, 
-    { chews: 30, price: 29.99, img: "assets/chews30.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_0A01F090F37E839DA0308E98223BFE26_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 12 }, 
-    { chews: 60, price: 49.99, img: "assets/chews60.jpg", amazon: "http://amazon.com/YouChews-Coffee-Chews-Caffeine-Ingredients/dp/B0CGSMNKZF?maas=maas_adg_DE10801AC9B210D2B47252508EA4EB93_afap_abs&ref_=aa_maas&tag=maas", stock: 6 }, 
+    const DEFAULTS = [
+      { chews: 5,  price:  9.99, img: "assets/chews5.jpg",  amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?th=1", stock: 1 },
+      { chews: 10, price: 14.99, img: "assets/chews10.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?th=1", stock: 1 },
+      { chews: 30, price: 29.99, img: "assets/chews30.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?th=1", stock: 12 },
+      { chews: 60, price: 49.99, img: "assets/chews60.jpg", amazon: "http://amazon.com/YouChews-Coffee-Chews-Caffeine-Ingredients/dp/B0CGSMNKZF", stock: 6 },
     ];
-
 
     const products = DEFAULTS.map((p, i) => {
       const idx = i + 1;
@@ -620,9 +595,15 @@
           </div>
 
           <div class="actions">
-            <a class="btn btn-primary ${oos ? "btn-disabled" : ""}" ${oos ? 'aria-disabled="true" tabindex="-1"' : `href="${p.amazon}"`}
+            <a class="btn btn-amz ${oos ? "btn-disabled" : ""}"
+               ${oos ? 'aria-disabled="true" tabindex="-1"' : `href="${p.amazon}"`}
                rel="noopener" target="_self">
-               ${oos ? "Out of Stock" : "Add To Cart →"}
+               ${oos ? "Out of Stock" : `
+                 <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                   <path d="M7 18a2 2 0 1 0 2 2 2 2 0 0 0-2-2zm10 0a2 2 0 1 0 2 2 2 2 0 0 0-2-2zM7.2 14h10.5a2 2 0 0 0 1.93-1.52l1.18-5.09A1 1 0 0 0 19.84 6H6.21l-.38-2H2v2h2l2.2 9z"/>
+                 </svg>
+                 Add to Cart
+               `}
             </a>
           </div>
         </article>
@@ -646,16 +627,14 @@
       });
     })();
 
-    // ---------- Footer CTA (auto-uses default pack) ----------
+    // ---------- Footer CTA uses default pack ----------
     function renderFooterCTA(){
-      // pick the default pack; fallback to the largest if missing
       const fallback = products.slice().sort((a,b)=>b.chews-a.chews)[0];
       const def = products.find(p => p.chews === DEFAULT_CHEWS) || fallback;
 
       const { save, pct } = computeSavings(def);
       const per = perUnit(def.price, def.chews);
 
-      // Fill content
       document.getElementById("footerCtaImg").src = def.img;
       document.getElementById("footerCtaTitle").textContent =
         `Most Popular • ${def.chews} ${plural(def.chews,'Chew','Chews')}`;
@@ -663,7 +642,6 @@
       document.getElementById("footerCtaPer").textContent = `≈ ${currency(per)} / chew`;
       document.getElementById("footerCtaSave").textContent = `You save ${currency(save)} (${pct.toFixed(0)}%)`;
 
-      // Buttons → Amazon PDP
       const go = (e)=>{ e.preventDefault(); window.location.href = AMAZON_URL; };
       document.getElementById("footerCtaBtn").href = AMAZON_URL;
       document.getElementById("footerCtaBtn").addEventListener("click", go);
