@@ -427,6 +427,17 @@
   </header>
 
   <div class="wrap">
+    
+
+    <header class="hero">
+      <div class="brand"><div id="brandText">CoffeeChews</div></div>
+      <div class="title">Pick Your Saving Size</div>
+      <div class="subtitle">1 Chew = 1☕️ Cup</div>
+    </header>
+
+    <!-- Masonry Grid of Plans -->
+    <section class="masonry" id="planGrid" aria-label="Available plans"></section>
+
     <!-- Video -->
     <section class="video-cta" aria-label="See CoffeeChews in action">
       <div class="cta-card">
@@ -444,15 +455,6 @@
         </div>
       </div>
     </section>
-
-    <header class="hero">
-      <div class="brand"><div id="brandText">CoffeeChews</div></div>
-      <div class="title">Pick Your Saving Size</div>
-      <div class="subtitle">1 Chew = 1☕️ Cup</div>
-    </header>
-
-    <!-- Masonry Grid of Plans -->
-    <section class="masonry" id="planGrid" aria-label="Available plans"></section>
 
     <!-- Footer CTA -->
     <div class="footer-cta-wrap">
@@ -507,10 +509,10 @@
 
     // ---------- Products grid ----------
     const DEFAULTS = [
-      { chews: 5,  price:  9.99, img: "assets/chews5.jpg",  amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?th=1", stock: 1 },
-      { chews: 10, price: 14.99, img: "assets/chews10.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?th=1", stock: 1 },
-      { chews: 30, price: 29.99, img: "assets/chews30.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?th=1", stock: 12 },
-      { chews: 60, price: 49.99, img: "assets/chews60.jpg", amazon: "http://amazon.com/YouChews-Coffee-Chews-Caffeine-Ingredients/dp/B0CGSMNKZF", stock: 6 },
+      { chews: 5,  price:  9.99, img: "assets/chews5.jpg",  amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_B82922D0E892A1ABB0A49127FE1C7EC5_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 1 },
+      { chews: 10, price: 14.99, img: "assets/chews10.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_50391CFB3CCE23F38F47FB37398B31C7_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 1 },
+      { chews: 30, price: 29.99, img: "assets/chews30.jpg", amazon: "https://www.amazon.com/YouChews-Caffeine-Chew-Ingredients-Supplement/dp/B0CXVKQ79B?maas=maas_adg_0A01F090F37E839DA0308E98223BFE26_afap_abs&ref_=aa_maas&tag=maas&th=1", stock: 12 },
+      { chews: 60, price: 49.99, img: "assets/chews60.jpg", amazon: "http://amazon.com/YouChews-Coffee-Chews-Caffeine-Ingredients/dp/B0CGSMNKZF?maas=maas_adg_DE10801AC9B210D2B47252508EA4EB93_afap_abs&ref_=aa_maas&tag=maas", stock: 6 },
     ];
 
     const products = DEFAULTS.map((p, i) => {
